@@ -1,7 +1,5 @@
-from datetime import datetime
 import unittest
 
-from airflow.models import DAG
 from airflow.hooks.valohai import ValohaiHook
 from airflow.operators.valohai import ValohaiSubmitExecutionOperator
 

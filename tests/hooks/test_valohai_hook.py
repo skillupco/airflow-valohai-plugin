@@ -39,5 +39,6 @@ class TestValohaiHook(unittest.TestCase):
         self.assertEqual(hook.host, 'app.valohai.com')
         self.assertDictEqual(hook.headers, {'Authorization': 'Token 123456789'})
 
+
 if __name__ == '__main__':
     unittest.main()

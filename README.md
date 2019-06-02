@@ -11,7 +11,7 @@ from airflow.operators.valohai import ValohaiSubmitExecutionOperator
 
 For older versions airflow<1.10.2  you need to manually add the code in the airflow plugins folder.
 
-## Run tests locally
+## Run tests
 
 Create a virtual environment:
 
@@ -32,3 +32,7 @@ Install airflow-valohai-plugin package:
 Run tests
 
 ```./run_unit_tests.sh tests/```
+
+# Run linting
+
+```flake8 airflow_valohai_plugin tests```

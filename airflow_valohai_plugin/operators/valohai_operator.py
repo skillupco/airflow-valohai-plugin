@@ -1,5 +1,3 @@
-import logging
-
 from airflow.models import BaseOperator
 
 from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
