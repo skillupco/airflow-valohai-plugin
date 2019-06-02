@@ -33,6 +33,6 @@ Run tests
 
 ```./run_unit_tests.sh tests/```
 
-# Run linting
+## Run linting
 
 ```flake8 airflow_valohai_plugin tests```
