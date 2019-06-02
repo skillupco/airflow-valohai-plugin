@@ -1,15 +1,34 @@
-GPL dependency
+## Installation
 
-One of the dependencies of Apache Airflow by default pulls in a GPL library (‘unidecode’). In case this is a concern you can force a non GPL library by issuing export SLUGIFY_USES_TEXT_UNIDECODE=yes and then proceed with the normal installation. Please note that this needs to be specified at every upgrade. Also note that if unidecode is already present on the system the dependency will still be used.
+For airflow>=1.10.2 you can install this package directly from Github, as Airflow uses setuptools to discover installed [Airflow plugins](https://airflow.apache.org/plugins.html#plugins-as-python-packages).
 
-For Airflow 1.10.2 we can distribute airflow plugins with setuptools https://airflow.apache.org/plugins.html#plugins-as-python-packages
-For the rest write doc of how to copy paste the code in plugins folder.
+You can then import the Valohai operators and hooks with:
 
-Create venv
+```
+from airflow.hooks.valohai import ValohaiHook
+from airflow.operators.valohai import ValohaiSubmitExecutionOperator
+```
 
-Install dependencies
-SLUGIFY_USES_TEXT_UNIDECODE=yes pip install -r tests/requirements.txt
+For older versions airflow<1.10.2  you need to manually add the code in the airflow plugins folder.
+
+## Run tests locally
+
+Create a virtual environment:
+
+```python3 -m venv venv```
+
+Activate the virtual environment:
+
+```source venv/bin/activate```
+
+Install test dependencies:
+
+```pip install -r tests/requirements.txt```
+
+Install airflow-valohai-plugin package:
+
+```python setup.py install```
 
 Run tests
 
-```nosetests tests```
+```./run_unit_tests.sh tests/```

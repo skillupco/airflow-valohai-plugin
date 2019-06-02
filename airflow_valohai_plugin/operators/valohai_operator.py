@@ -2,7 +2,7 @@ import logging
 
 from airflow.models import BaseOperator
 
-from valohai_plugin.hooks.valohai_hook import ValohaiHook
+from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
 
 class ValohaiSubmitExecutionOperator(BaseOperator):

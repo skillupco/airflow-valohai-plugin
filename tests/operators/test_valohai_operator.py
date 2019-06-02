@@ -2,8 +2,8 @@ from datetime import datetime
 import unittest
 
 from airflow.models import DAG
-from airflow.hooks.valohai_plugin import ValohaiHook
-from airflow.operators.valohai_plugin import ValohaiSubmitExecutionOperator
+from airflow.hooks.valohai import ValohaiHook
+from airflow.operators.valohai import ValohaiSubmitExecutionOperator
 
 
 try:
@@ -37,3 +37,7 @@ class TestValohaiSubmitExecutionOperator(unittest.TestCase):
 
         submit_execution_mock.assert_called_once()
         hook_init_mock.assert_called_once_with('valohai_default')
+
+
+if __name__ == '__main__':
+    unittest.main()

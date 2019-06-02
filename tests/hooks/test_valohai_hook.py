@@ -4,7 +4,7 @@ import json
 from airflow import configuration
 from airflow import models
 from airflow.utils import db
-from airflow.hooks.valohai_plugin import ValohaiHook
+from airflow.hooks.valohai import ValohaiHook
 
 try:
     from unittest import mock
@@ -38,3 +38,6 @@ class TestValohaiHook(unittest.TestCase):
 
         self.assertEqual(hook.host, 'app.valohai.com')
         self.assertDictEqual(hook.headers, {'Authorization': 'Token 123456789'})
+
+if __name__ == '__main__':
+    unittest.main()
