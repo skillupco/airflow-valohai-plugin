@@ -29,7 +29,7 @@ Install airflow-valohai-plugin package:
 
 ```python setup.py install```
 
-Run tests
+Run tests:
 
 ```./run_unit_tests.sh tests/```
 
