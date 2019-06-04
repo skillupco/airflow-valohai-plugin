@@ -121,7 +121,6 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
         )
 
-        # TODO: handle project not found error
         return response.json()
 
     def get_latest_commit(self, project_id, branch):
@@ -209,12 +208,18 @@ class ValohaiHook(BaseHook):
             json=payload,
             headers=self.headers
         )
-        # TODO: handle errors when post
-        logging.info('Got response: {}'.format(response.json()))
 
-        execution_id = response.json()['id']
-        execution_url = response.json()['urls']['display']
-        logging.info('Started execution: {}'.format(execution_url))
+        try:
+            data = response.json()
+            logging.info('Got response: {}'.format(data))
+            execution_id = data['id']
+            execution_url = data['urls']['display']
+            logging.info('Started execution: {}'.format(execution_url))
+        except Exception:
+            logging.exception('Failed to parse response: {}'.format(response))
+
+        # Raises stored HTTPError, if response is not 200.
+        response.raise_for_status()
 
         if tags:
             self.add_execution_tags(tags, execution_id)
