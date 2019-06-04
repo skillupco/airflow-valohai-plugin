@@ -13,7 +13,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         step,
         inputs,
         parameters,
-        environment,
+        environment=None,
         commit=None,
         branch=None,
         tags=None,
