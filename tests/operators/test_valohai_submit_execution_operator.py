@@ -18,7 +18,7 @@ class TestValohaiSubmitExecutionOperator(unittest.TestCase):
     def setUp(self):
         self.valohai_operator = ValohaiSubmitExecutionOperator(
             task_id='test-valohai-operator',
-            project_id='1234',
+            project_name='predict-future',
             step='train',
             inputs={},
             parameters={},

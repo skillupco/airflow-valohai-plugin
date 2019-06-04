@@ -9,7 +9,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
 
     def __init__(
         self,
-        project_id,
+        project_name,
         step,
         inputs,
         parameters,
@@ -22,7 +22,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         **kwargs
     ):
         super(ValohaiSubmitExecutionOperator, self).__init__(*args, **kwargs)
-        self.project_id = project_id
+        self.project_name = project_name
         self.step = step
         self.inputs = inputs
         self.parameters = parameters
@@ -42,7 +42,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
 
         # Pushes execution status to XCOM
         return hook.submit_execution(
-            self.project_id,
+            self.project_name,
             self.step,
             self.inputs,
             self.parameters,

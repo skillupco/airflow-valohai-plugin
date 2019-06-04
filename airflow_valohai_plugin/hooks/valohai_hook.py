@@ -8,13 +8,13 @@ import requests
 from airflow.hooks.base_hook import BaseHook
 from airflow.exceptions import AirflowException
 
-
-SUBMIT_EXECUTION_ENDPOINT = 'api/v0/executions/'
+LIST_PROJECTS_ENDPOINT = 'api/v0/projects/'
 LIST_REPOSITORIES_ENDPOINT = 'api/v0/repositories/'
 LIST_COMMITS_ENDPOINT = 'api/v0/commits/'
-EXECUTION_ENDPOINT = 'api/v0/executions/{execution_id}/'
+SUBMIT_EXECUTION_ENDPOINT = 'api/v0/executions/'
+GET_EXECUTION_DETAILS_ENDPOINT = 'api/v0/executions/{execution_id}/'
 FETCH_REPOSITORY_ENDPOINT = 'api/v0/projects/{project_id}/fetch/'
-EXECUTION_TAGS_ENDPOINT = 'api/v0/executions/{execution_id}/tags/'
+SET_EXECUTION_TAGS_ENDPOINT = 'api/v0/executions/{execution_id}/tags/'
 
 incomplete_execution_statuses = {
     'created',
@@ -54,11 +54,27 @@ class ValohaiHook(BaseHook):
     def __init__(self, valohai_conn_id='valohai_default'):
         self.valohai_conn = self.get_connection(valohai_conn_id)
         self.host = self.valohai_conn.host
+
         if 'token' in self.valohai_conn.extra_dejson:
             logging.info('Using token authorization.')
             self.headers = {
                 'Authorization': 'Token {}'.format(self.valohai_conn.extra_dejson['token'])
             }
+
+    def get_project_id(self, project_name):
+        url = 'https://{host}/{endpoint}'.format(
+            host=self.host,
+            endpoint=LIST_PROJECTS_ENDPOINT,
+        )
+        response = requests.get(
+            url,
+            headers=self.headers,
+            params={'limit': 10000}
+        )
+
+        for project in response.json()['results']:
+            if project['name'] == project_name:
+                return project['id']
 
     def get_repository_id(self, project_id):
         url = 'https://{host}/{endpoint}'.format(
@@ -70,20 +86,19 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
             params={'limit': 10000}
         )
+
         for repository in response.json()['results']:
             if repository['project']['id'] == project_id:
                 return repository['id']
 
     def fetch_repository(self, project_id):
         """
-        Make Valohai fetch the latest commit for the fetch reference
-        in the Valohai UI repository settings.
+        Make Valohai fetch the latest commits.
         """
         url = 'https://{host}/{endpoint}'.format(
             host=self.host,
             endpoint=FETCH_REPOSITORY_ENDPOINT.format(project_id=project_id)
         )
-
         response = requests.post(
             url,
             headers=self.headers,
@@ -94,7 +109,6 @@ class ValohaiHook(BaseHook):
 
     def get_latest_commit(self, project_id, branch):
         repository_id = self.get_repository_id(project_id)
-
         url = 'https://{host}/{endpoint}'.format(
             host=self.host,
             endpoint=LIST_COMMITS_ENDPOINT
@@ -112,29 +126,31 @@ class ValohaiHook(BaseHook):
     def get_execution_details(self, execution_id):
         url = 'https://{host}/{endpoint}'.format(
             host=self.host,
-            endpoint=EXECUTION_ENDPOINT.format(execution_id=execution_id)
+            endpoint=GET_EXECUTION_DETAILS_ENDPOINT.format(execution_id=execution_id)
         )
         response = requests.get(
             url,
             headers=self.headers,
         )
+
         return response.json()
 
     def add_execution_tags(self, tags, execution_id):
         url = 'https://{host}/{endpoint}'.format(
             host=self.host,
-            endpoint=EXECUTION_TAGS_ENDPOINT.format(execution_id=execution_id)
+            endpoint=SET_EXECUTION_TAGS_ENDPOINT.format(execution_id=execution_id)
         )
         response = requests.post(
             url,
             headers=self.headers,
             json={'tags': tags}
         )
+
         return response.json()
 
     def submit_execution(
         self,
-        project_id,
+        project_name,
         step,
         inputs,
         parameters,
@@ -149,6 +165,10 @@ class ValohaiHook(BaseHook):
 
         Returns the execution details if the execution completed successfully.
         """
+        self.polling_period_seconds = polling_period_seconds
+
+        project_id = self.get_project_id(project_name)
+
         if branch:
             response = self.fetch_repository(project_id)
             logging.info('Fetched latest commits with response: {}'.format(response))
@@ -182,8 +202,10 @@ class ValohaiHook(BaseHook):
         if tags:
             self.add_execution_tags(tags, execution_id)
             logging.info('Added execution tags: {}'.format(tags))
+
         while True:
             time.sleep(polling_period_seconds)
+
             execution_details = self.get_execution_details(execution_id)
             status = execution_details['status']
             if status in incomplete_execution_statuses:
