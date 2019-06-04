@@ -122,3 +122,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Airflow
+airflow.cfg
+airflow.db
+logs/
+unittests.cfg
+airflow-webserver.pid
+
+# Visual Studi
+.vscode/

@@ -25,14 +25,16 @@ Install test dependencies:
 
 ```pip install -r tests/requirements.txt```
 
-Install airflow-valohai-plugin package:
+Install airflow-valohai-plugin in editable mode:
 
-```python setup.py install```
+```pip install -e .```
 
 Run tests:
 
-```./run_unit_tests.sh tests/```
+```AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh```
 
 ## Run linting
 
-```flake8 airflow_valohai_plugin tests```
+```flake8 airflow_valohai_plugin tests examples setup.py```
+
+Make sure you restart the webserver and scheduler after making changes to plugins so that they take effect.
