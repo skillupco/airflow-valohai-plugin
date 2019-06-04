@@ -88,6 +88,7 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
             params={'limit': 10000}
         )
+        response.raise_for_status()
 
         for project in response.json()['results']:
             if project['name'] == project_name:
@@ -103,6 +104,7 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
             params={'limit': 10000}
         )
+        response.raise_for_status()
 
         for repository in response.json()['results']:
             if repository['project']['id'] == project_id:
@@ -120,6 +122,7 @@ class ValohaiHook(BaseHook):
             url,
             headers=self.headers,
         )
+        response.raise_for_status()
 
         return response.json()
 
@@ -134,6 +137,7 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
             params={'limit': 10000, 'ordering': '-commit_time'}
         )
+        response.raise_for_status()
 
         for commit in response.json()['results']:
             if commit['repository'] == repository_id and commit['ref'] == branch:
@@ -148,6 +152,7 @@ class ValohaiHook(BaseHook):
             url,
             headers=self.headers,
         )
+        response.raise_for_status()
 
         return response.json()
 
@@ -161,6 +166,7 @@ class ValohaiHook(BaseHook):
             headers=self.headers,
             json={'tags': tags}
         )
+        response.raise_for_status()
 
         return response.json()
 
@@ -208,6 +214,7 @@ class ValohaiHook(BaseHook):
             json=payload,
             headers=self.headers
         )
+        response.raise_for_status()
 
         try:
             data = response.json()
@@ -217,9 +224,6 @@ class ValohaiHook(BaseHook):
             logging.info('Started execution: {}'.format(execution_url))
         except Exception:
             logging.exception('Failed to parse response: {}'.format(response))
-
-        # Raises stored HTTPError, if response is not 200.
-        response.raise_for_status()
 
         if tags:
             self.add_execution_tags(tags, execution_id)
