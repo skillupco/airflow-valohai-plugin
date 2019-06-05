@@ -20,10 +20,10 @@ dag = DAG(
 )
 
 ValohaiSubmitExecutionOperator(
-    dag=dag,
-    task_id='example_valohai_operator',
-    project_name='predict_future',
+    task_id='train_image_classifier',
+    project_name='image_classifier',
     step='train',
     inputs={},
     parameters={},
+    dag=dag
 )
