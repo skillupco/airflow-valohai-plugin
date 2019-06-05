@@ -4,7 +4,7 @@ This is an integration between Airflow and Valohai that allow Airflow tasks to l
 
 [Airflow](https://airflow.apache.org/) is a platform to programmatically author, schedule and monitor workflows.
 
-[Valohai](https://valohai.com/) is a platform scale your Machine Learning with Machine Orchestration and Version Control.
+[Valohai](https://valohai.com/) is a platform to scale your Machine Learning with Machine Orchestration and Version Control.
 
 
 ## Installation
