@@ -15,7 +15,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         parameters=None,
         environment=None,
         commit=None,
-        branch=None,
+        branch='master',
         tags=None,
         valohai_conn_id='valohai_default',
         *args,

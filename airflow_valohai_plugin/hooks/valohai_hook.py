@@ -191,9 +191,11 @@ class ValohaiHook(BaseHook):
 
         project_id = self.get_project_id(project_name)
 
-        if branch:
+        if not commit:
+            # Use branch that defaults to master
             response = self.fetch_repository(project_id)
             logging.info('Fetched latest commits with response: {}'.format(response))
+
             commit = self.get_latest_commit(project_id, branch)
             logging.info('Using latest {} branch commit: {}'.format(branch, commit))
 
@@ -226,6 +228,7 @@ class ValohaiHook(BaseHook):
         try:
             data = response.json()
             logging.info('Got response: {}'.format(data))
+
             execution_id = data['id']
             execution_url = data['urls']['display']
             logging.info('Started execution: {}'.format(execution_url))
