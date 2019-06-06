@@ -29,7 +29,7 @@ source venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
-Init the Airflow database
+Init the Airflow database.
 ```
 AIRFLOW_HOME=$PWD/examples airflow initdb
 ```
@@ -61,7 +61,9 @@ pip install -r requirements-dev.txt
 
 # Run tests
 AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh
+```
 
-# Run linting
+## Run linting
+```
 flake8 airflow_valohai_plugin tests examples setup.py
 ```
