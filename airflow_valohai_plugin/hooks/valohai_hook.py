@@ -204,11 +204,18 @@ class ValohaiHook(BaseHook):
         payload = {
             'project': project_id,
             'commit': commit,
-            'step': step,
-            'inputs': inputs,
-            'parameters': parameters,
-            'environment': environment
+            'step': step
         }
+
+        if inputs:
+            payload['inputs'] = inputs
+
+        if parameters:
+            payload['parameters'] = parameters
+
+        if environment:
+            payload['environment'] = environment
+
         response = requests.post(
             url,
             json=payload,
