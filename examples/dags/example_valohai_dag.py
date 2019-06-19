@@ -22,7 +22,7 @@ dag = DAG(
 ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
-    step='Train model',
+    step='Train model (MNIST)',
     dag=dag,
     inputs={
         'test-set-images': 'https://valohai-mnist.s3.amazonaws.com/t10k-images-idx3-ubyte.gz',
@@ -33,6 +33,7 @@ ValohaiSubmitExecutionOperator(
     parameters={
         'dropout': 0.9,
         'learning_rate': 0.001,
-        'max_steps': 300
+        'max_steps': 300,
+        'batch_size': 200,
     }
 )
