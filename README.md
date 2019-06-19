@@ -1,31 +1,24 @@
 # Airflow Valohai Plugin
 
-This is an integration between Airflow and Valohai that allow Airflow tasks to launch executions in Valohai. It adds classes `ValohaiHook` and `ValohaiSubmitExecutionOperator` to be used in Airflow.
-
-[Airflow](https://airflow.apache.org/) is a platform to programmatically author, schedule and monitor workflows.
-
-[Valohai](https://valohai.com/) is a platform to scale your Machine Learning with Machine Orchestration and Version Control.
-
+This is an integration between [Airflow](https://airflow.apache.org/) and [Valohai](https://valohai.com/) that allow Airflow tasks to launch executions in Valohai.
 
 ## Installation
 
-### airflow>=1.10.2
+### For airflow>=1.10.2
 Install this package directly from Github (and soon pypi).
 
 ```
 pip install git+https://github.com/Skillupco/airflow-valohai-plugin
 ```
 
-### airflow<1.10.2
+### For airflow<1.10.2
 Copy the contents of `airflow_valohai_plugin` into your `$AIRFLOW_HOME/plugins` folder.
 
 You can read more about the use cases of [Airflow plugins](https://airflow.apache.org/plugins.html) in the official docs.
 
 ## Usage
 
-Get a Valohai [API Token](https://app.valohai.com/auth/tokens/).
-
-Create a Valohai Connection in the Airflow UI with:
+Get a Valohai [API Token](https://app.valohai.com/auth/tokens/). Create a Valohai Connection in the Airflow UI with:
 - Conn Id: valohai_default
 - Conn Type: HTTP
 - Host: app.valohai.com
@@ -37,9 +30,9 @@ After installing the plugin you can import the Valohai operators.
 from airflow.operators.valohai import ValohaiSubmitExecutionOperator
 ```
 
-You can find the code of example Airflow DAGs and tasks in the [examples](https://github.com/Skillupco/airflow-valohai-plugin/blob/master/examples/dags) dags folder. Monitor your task from the Airflow UI.
+## Examples
 
-![](/docs/img/airflow-dag-view.png)
+You can find the code of example Airflow DAGs and tasks in the [examples](https://github.com/Skillupco/airflow-valohai-plugin/blob/master/examples/dags) dags folder.
 
 ## Contributing
 
