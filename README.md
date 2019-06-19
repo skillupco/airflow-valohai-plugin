@@ -5,10 +5,10 @@ This is an integration between [Airflow](https://airflow.apache.org/) and [Valoh
 ## Installation
 
 #### For airflow>=1.10.2
-Install this package directly from Github (and soon pypi).
+Install this package directly from pypi.
 
 ```
-pip install git+https://github.com/Skillupco/airflow-valohai-plugin
+pip install airflow-valohai-plugin
 ```
 
 #### For airflow<1.10.2
