@@ -1,5 +1,4 @@
 import unittest
-import json
 
 from airflow import configuration
 from airflow import models
