@@ -4,14 +4,14 @@ This is an integration between [Airflow](https://airflow.apache.org/) and [Valoh
 
 ## Installation
 
-### For airflow>=1.10.2
+#### For airflow>=1.10.2
 Install this package directly from Github (and soon pypi).
 
 ```
 pip install git+https://github.com/Skillupco/airflow-valohai-plugin
 ```
 
-### For airflow<1.10.2
+#### For airflow<1.10.2
 Copy the contents of `airflow_valohai_plugin` into your `$AIRFLOW_HOME/plugins` folder.
 
 You can read more about the use cases of [Airflow plugins](https://airflow.apache.org/plugins.html) in the official docs.
