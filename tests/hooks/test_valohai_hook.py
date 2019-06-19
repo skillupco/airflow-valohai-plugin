@@ -24,7 +24,7 @@ class TestValohaiHook(unittest.TestCase):
                 conn_id='valohai_default',
                 conn_type='HTTP',
                 host='app.valohai.com',
-                extra=json.dumps({'token': '123456789'})
+                password='password'
             )
         )
 
@@ -34,10 +34,10 @@ class TestValohaiHook(unittest.TestCase):
         self.assertEqual(hook.valohai_conn.conn_id, 'valohai_default')
         self.assertEqual(hook.valohai_conn.conn_type, 'HTTP')
         self.assertEqual(hook.valohai_conn.host, 'app.valohai.com')
-        self.assertEqual(hook.valohai_conn.extra, '{"token": "123456789"}')
+        self.assertEqual(hook.valohai_conn.password, 'password')
 
         self.assertEqual(hook.host, 'app.valohai.com')
-        self.assertDictEqual(hook.headers, {'Authorization': 'Token 123456789'})
+        self.assertDictEqual(hook.headers, {'Authorization': 'Token password'})
 
 
 if __name__ == '__main__':

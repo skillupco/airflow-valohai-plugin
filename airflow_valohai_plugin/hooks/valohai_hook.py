@@ -71,12 +71,11 @@ class ValohaiHook(BaseHook):
     def __init__(self, valohai_conn_id='valohai_default'):
         self.valohai_conn = self.get_connection(valohai_conn_id)
         self.host = self.valohai_conn.host
+        self.password = self.valohai_conn.password
 
-        if 'token' in self.valohai_conn.extra_dejson:
-            logging.info('Using token authorization.')
-            self.headers = {
-                'Authorization': 'Token {}'.format(self.valohai_conn.extra_dejson['token'])
-            }
+        self.headers = {
+            'Authorization': 'Token {}'.format(self.password)
+        }
 
     def get_project_id(self, project_name):
         url = 'https://{host}/{endpoint}'.format(

@@ -25,9 +25,11 @@ You can read more about the use cases of [Airflow plugins](https://airflow.apach
 
 Get a Valohai [API Token](https://app.valohai.com/auth/tokens/).
 
-Create a Valohai Connection in the Airflow UI.
-
-![](/docs/img/airflow-connection-ui.png)
+Create a Valohai Connection in the Airflow UI with:
+- Conn Id: valohai_default
+- Conn Type: HTTP
+- Host: app.valohai.com
+- Password: REPLACE_WITH_API_TOKEN
 
 After installing the plugin you can import the Valohai operators.
 
