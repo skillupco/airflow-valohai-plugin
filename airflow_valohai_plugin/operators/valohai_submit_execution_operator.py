@@ -4,6 +4,22 @@ from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
 
 class ValohaiSubmitExecutionOperator(BaseOperator):
+    """
+    Launches a Valohai execution from an Airflow task.
+
+    Args:
+        project_name (str): name of the project.
+        step (str): name of the step.
+        inputs (dict): file inputs dictionary with name in keys and url in values.
+        parameters (dict): parameters with name in keys and value in values.
+        environment (str, optional): cloud environment to launch the execution.
+            By default it takes the environment in the Valohai UI settings.
+        commit (str, optional): commit hash.
+            By default it fetches the latest commit.
+        branch (str, optional): branch name in the code repository.
+            By default it takes master.
+        tags (list, optional): tags to add to the execution.
+    """
     ui_color = '#002f6c'
     ui_fgcolor = '#fff'
 
