@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.valohai import ValohaiSubmitExecutionOperator
+from airflow.operators.valohai import ValohaiSubmitExecutionOperator, ValohaiDownloadExecutionOutputsOperator
 
 default_args = {
     'owner': 'airflow',
@@ -19,7 +19,7 @@ dag = DAG(
     catchup=False
 )
 
-ValohaiSubmitExecutionOperator(
+train_model = ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
     step='Train model (MNIST)',
@@ -37,3 +37,13 @@ ValohaiSubmitExecutionOperator(
         'batch_size': 200,
     }
 )
+
+download_model = ValohaiDownloadExecutionOutputsOperator(
+    task_id='download_model',
+    output_task_id='train_model',
+    output_path='.',
+    output_name_pattern='model.pb',
+    dag=dag
+)
+
+train_model >> download_model
