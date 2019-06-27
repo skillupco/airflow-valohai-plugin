@@ -37,6 +37,19 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
             self.valohai_conn_id
         )
 
+    def get_output_uri(self, dag_id, task_id, output_name, context):
+        execution_details = context['ti'].xcom_pull(
+            dag_id=dag_id,
+            task_ids=task_id,
+            include_prior_dates=True
+        )
+
+        for output in execution_details['outputs']:
+            if output['name'] == output_name:
+                return ['datum://{}'.format(output['id'])]
+
+        raise Exception('Failed to find uri for input with name {}'.format(output_name))
+
     def execute(self, context):
         hook = self.get_hook()
 
