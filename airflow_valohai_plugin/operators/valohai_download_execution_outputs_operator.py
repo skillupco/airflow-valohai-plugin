@@ -40,8 +40,6 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
         return os.path.join(AIRFLOW_HOME, self.output_path, name)
 
     def execute(self, context):
-        logging.info(context['ti'])
-        logging.info(self.output_task_id)
         execution_details = context['ti'].xcom_pull(task_ids=self.output_task_id)
 
         for output in execution_details['outputs']:
