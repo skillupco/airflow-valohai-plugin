@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import partial
 
 from airflow import DAG
 from airflow.operators.valohai import ValohaiSubmitExecutionOperator
@@ -33,32 +34,29 @@ preprocess = ValohaiSubmitExecutionOperator(
     },
 )
 
-
-class ValohaiTrainOperator(ValohaiSubmitExecutionOperator):
-
-    def execute(self, context):
-        dag_id = dag.dag_id
-        task_id = preprocess.task_id
-
-        self.inputs = {
-            'training-set-images': self.get_output_uri(
-                dag_id, task_id, 'mnist-train-images.gz', context),
-            'training-set-labels': self.get_output_uri(
-                dag_id, task_id, 'mnist-train-labels.gz', context),
-            'test-set-images': self.get_output_uri(
-                dag_id, task_id, 'mnist-test-images.gz', context),
-            'test-set-labels': self.get_output_uri(
-                dag_id, task_id, 'mnist-test-labels.gz', context),
-        }
-        super().execute(context)
-
-
-train = ValohaiTrainOperator(
+train = ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
     step='Train model (MNIST)',
     dag=dag,
-    inputs={},
+    inputs={
+        'training-set-images': partial(
+            ValohaiSubmitExecutionOperator.get_output_uri,
+            task=preprocess,
+            name='mnist-train-images.gz'),
+        'training-set-labels': partial(
+            ValohaiSubmitExecutionOperator.get_output_uri,
+            task=preprocess,
+            name='mnist-train-labels.gz'),
+        'test-set-images': partial(
+            ValohaiSubmitExecutionOperator.get_output_uri,
+            task=preprocess,
+            name='mnist-test-images.gz'),
+        'test-set-labels': partial(
+            ValohaiSubmitExecutionOperator.get_output_uri,
+            task=preprocess,
+            name='mnist-test-labels.gz'),
+    },
     parameters={
         'dropout': 0.9,
         'learning_rate': 0.001,
