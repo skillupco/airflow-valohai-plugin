@@ -1,8 +1,5 @@
-import re
-import os
 import time
 import logging
-from urllib.request import urlretrieve
 
 import requests
 
@@ -33,35 +30,6 @@ fail_execution_statuses = {
 success_execution_statuses = {
     'complete',
 }
-
-
-def download_execution_outputs(task_id, path, pattern=None, **context):
-    '''
-    Downloads and replaces execution outputs locally using the S3 url
-    with authentication details from the Valohai execution details API.
-
-    Execution details are pulled from the XCOM variable of the last sucessful model task.
-
-    Args:
-        task_id (str): id of the task to download outputs
-        path (str): path of the directory where to save each output
-        pattern (str): regex string to match outputs
-
-    Notes:
-        By default only tasks from the current dag are considered
-        Check https://airflow.apache.org/code.html#airflow.models.TaskInstance.xcom_pull
-    '''
-    execution_details = context['ti'].xcom_pull(task_ids=task_id)
-
-    for output in execution_details['outputs']:
-        if pattern and not re.match(pattern, output['name']):
-            logging.info('Ignore ouput name {} because failed to match pattern {}'.format(
-                output['name'], pattern
-            ))
-            continue
-
-        urlretrieve(output['url'], os.path.join(path, output['name']))
-        logging.info('Downloaded output: {}'.format(output['name']))
 
 
 class ValohaiHook(BaseHook):
