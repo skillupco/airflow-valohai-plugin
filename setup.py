@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='airflow-valohai-plugin',
-    version='0.0.1',
+    version='0.0.2',
     description='Airflow plugin to launch Valohai executions from Airflow tasks',
     author='Skillup',
     author_email='ari@skillup.co',
