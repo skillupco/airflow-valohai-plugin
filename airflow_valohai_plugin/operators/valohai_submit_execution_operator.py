@@ -10,8 +10,8 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
     Args:
         project_name (str): name of the project.
         step (str): name of the step.
-        inputs (dict): file inputs dictionary with name in keys and url in values.
-        parameters (dict): parameters with name in keys and value in values.
+        inputs (dict, optional): file inputs dictionary with name in keys and url in values.
+        parameters (dict, optional): parameters with name in keys and value in values.
         environment (str, optional): cloud environment to launch the execution.
             By default it takes the environment in the Valohai UI settings.
         commit (str, optional): commit hash.
@@ -27,12 +27,12 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         self,
         project_name,
         step,
-        inputs,
-        parameters,
+        inputs={},
+        parameters={},
         environment=None,
         commit=None,
         branch='master',
-        tags=None,
+        tags=[],
         valohai_conn_id='valohai_default',
         *args,
         **kwargs
