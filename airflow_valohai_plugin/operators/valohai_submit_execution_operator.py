@@ -3,6 +3,16 @@ from airflow.models import BaseOperator
 from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
 
+def resolve_callables(d, context):
+    resolved_d = {}
+    for key, value in d.items():
+        if callable(value):
+            resolved_d[key] = value(context)
+        else:
+            resolved_d[key] = value
+    return resolved_d
+
+
 class ValohaiSubmitExecutionOperator(BaseOperator):
     """
     Launches a Valohai execution from an Airflow task.
@@ -53,6 +63,20 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
             self.valohai_conn_id
         )
 
+    @staticmethod
+    def get_output_uri(context, task=None, name=None):
+        execution_details = context['ti'].xcom_pull(
+            dag_id=task.dag_id,
+            task_ids=task.task_id,
+            include_prior_dates=True
+        )
+
+        for output in execution_details['outputs']:
+            if output['name'] == name:
+                return ['datum://{}'.format(output['id'])]
+
+        raise Exception('Failed to find uri for input with name {}'.format(output))
+
     def execute(self, context):
         hook = self.get_hook()
 
@@ -60,8 +84,8 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         return hook.submit_execution(
             self.project_name,
             self.step,
-            self.inputs,
-            self.parameters,
+            resolve_callables(self.inputs, context),
+            resolve_callables(self.parameters, context),
             self.environment,
             self.commit,
             self.branch,
