@@ -40,9 +40,8 @@ train_model = ValohaiSubmitExecutionOperator(
 
 download_model = ValohaiDownloadExecutionOutputsOperator(
     task_id='download_model',
-    output_task_id='train_model',
-    output_path='.',
-    output_name_pattern='model.pb',
+    output_task=train_model,
+    output_name='model.pb',
     dag=dag
 )
 
