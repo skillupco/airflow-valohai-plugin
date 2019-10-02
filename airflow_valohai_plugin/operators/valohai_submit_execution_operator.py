@@ -75,7 +75,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
             if output['name'] == name:
                 return ['datum://{}'.format(output['id'])]
 
-        raise Exception('Failed to find uri for input with name {}'.format(output))
+        raise Exception('Failed to find uri for input with name {}'.format(name))
 
     def execute(self, context):
         hook = self.get_hook()
