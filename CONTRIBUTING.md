@@ -67,3 +67,15 @@ AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh
 ```
 flake8 airflow_valohai_plugin tests examples setup.py
 ```
+
+## Release a new version
+
+Create a PR to increment the version in `setup.py`.
+
+Locally, build a distribution with `python3 setup.py sdist bdist_wheel`.
+
+Install `twine` with `pip install twine`
+
+Upload the distribution to pypi with `twine upload dist/*`.
+
+You will be asked for your credentials.
