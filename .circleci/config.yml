@@ -1,0 +1,10 @@
+ version: 2
+ jobs:
+   build:
+     docker:
+       - image: circleci/python:3.6.8-stretch
+     steps:
+       - checkout
+       - run: pip install -r requirements-dev.txt
+       - run: flake8 airflow_valohai_plugin tests examples setup.py
+       - run: AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh
