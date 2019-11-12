@@ -6,13 +6,13 @@ import requests
 from airflow.hooks.base_hook import BaseHook
 from airflow.exceptions import AirflowException
 
-LIST_PROJECTS_ENDPOINT = 'api/v0/projects/'
-LIST_REPOSITORIES_ENDPOINT = 'api/v0/repositories/'
-LIST_COMMITS_ENDPOINT = 'api/v0/commits/'
-SUBMIT_EXECUTION_ENDPOINT = 'api/v0/executions/'
-GET_EXECUTION_DETAILS_ENDPOINT = 'api/v0/executions/{execution_id}/'
-FETCH_REPOSITORY_ENDPOINT = 'api/v0/projects/{project_id}/fetch/'
-SET_EXECUTION_TAGS_ENDPOINT = 'api/v0/executions/{execution_id}/tags/'
+LIST_PROJECTS_ENDPOINT = 'https://{host}/api/v0/projects/'
+LIST_REPOSITORIES_ENDPOINT = 'https://{host}/api/v0/repositories/'
+LIST_COMMITS_ENDPOINT = 'https://{host}/api/v0/commits/'
+SUBMIT_EXECUTION_ENDPOINT = 'https://{host}/api/v0/executions/'
+GET_EXECUTION_DETAILS_ENDPOINT = 'https://{host}/api/v0/executions/{execution_id}/'
+FETCH_REPOSITORY_ENDPOINT = 'https://{host}/api/v0/projects/{project_id}/fetch/'
+SET_EXECUTION_TAGS_ENDPOINT = 'https://{host}/api/v0/executions/{execution_id}/tags/'
 
 incomplete_execution_statuses = {
     'created',
@@ -46,12 +46,8 @@ class ValohaiHook(BaseHook):
         }
 
     def get_project_id(self, project_name):
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=LIST_PROJECTS_ENDPOINT,
-        )
         response = requests.get(
-            url,
+            LIST_PROJECTS_ENDPOINT.format(host=self.host),
             headers=self.headers,
             params={'limit': 10000}
         )
@@ -62,12 +58,8 @@ class ValohaiHook(BaseHook):
                 return project['id']
 
     def get_repository_id(self, project_id):
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=LIST_REPOSITORIES_ENDPOINT,
-        )
         response = requests.get(
-            url,
+            LIST_REPOSITORIES_ENDPOINT.format(host=self.host),
             headers=self.headers,
             params={'limit': 10000}
         )
@@ -81,12 +73,8 @@ class ValohaiHook(BaseHook):
         """
         Make Valohai fetch the latest commits.
         """
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=FETCH_REPOSITORY_ENDPOINT.format(project_id=project_id)
-        )
         response = requests.post(
-            url,
+            FETCH_REPOSITORY_ENDPOINT.format(host=self.host, project_id=project_id),
             headers=self.headers,
         )
         response.raise_for_status()
@@ -95,12 +83,9 @@ class ValohaiHook(BaseHook):
 
     def get_latest_commit(self, project_id, branch):
         repository_id = self.get_repository_id(project_id)
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=LIST_COMMITS_ENDPOINT
-        )
+
         response = requests.get(
-            url,
+            LIST_COMMITS_ENDPOINT.format(host=self.host),
             headers=self.headers,
             params={'limit': 10000, 'ordering': '-commit_time'}
         )
@@ -111,12 +96,8 @@ class ValohaiHook(BaseHook):
                 return commit['identifier']
 
     def get_execution_details(self, execution_id):
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=GET_EXECUTION_DETAILS_ENDPOINT.format(execution_id=execution_id)
-        )
         response = requests.get(
-            url,
+            GET_EXECUTION_DETAILS_ENDPOINT.format(host=self.host, execution_id=execution_id),
             headers=self.headers,
         )
         response.raise_for_status()
@@ -124,12 +105,8 @@ class ValohaiHook(BaseHook):
         return response.json()
 
     def add_execution_tags(self, tags, execution_id):
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=SET_EXECUTION_TAGS_ENDPOINT.format(execution_id=execution_id)
-        )
         response = requests.post(
-            url,
+            SET_EXECUTION_TAGS_ENDPOINT.format(host=self.host, execution_id=execution_id),
             headers=self.headers,
             json={'tags': tags}
         )
@@ -166,10 +143,6 @@ class ValohaiHook(BaseHook):
             commit = self.get_latest_commit(project_id, branch)
             logging.info('Using latest {} branch commit: {}'.format(branch, commit))
 
-        url = 'https://{host}/{endpoint}'.format(
-            host=self.host,
-            endpoint=SUBMIT_EXECUTION_ENDPOINT
-        )
         payload = {
             'project': project_id,
             'commit': commit,
@@ -186,7 +159,7 @@ class ValohaiHook(BaseHook):
             payload['environment'] = environment
 
         response = requests.post(
-            url,
+            SUBMIT_EXECUTION_ENDPOINT.format(host=self.host),
             json=payload,
             headers=self.headers
         )
