@@ -1,5 +1,4 @@
 from datetime import datetime
-from functools import partial
 
 from airflow import DAG
 from airflow.operators.valohai import ValohaiSubmitExecutionOperator
@@ -40,20 +39,16 @@ train = ValohaiSubmitExecutionOperator(
     step='Train model (MNIST)',
     dag=dag,
     inputs={
-        'training-set-images': partial(
-            ValohaiSubmitExecutionOperator.get_output_uri,
+        'training-set-images': ValohaiSubmitExecutionOperator.get_output_uri(
             task=preprocess,
             name='mnist-train-images.gz'),
-        'training-set-labels': partial(
-            ValohaiSubmitExecutionOperator.get_output_uri,
+        'training-set-labels': ValohaiSubmitExecutionOperator.get_output_uri(
             task=preprocess,
             name='mnist-train-labels.gz'),
-        'test-set-images': partial(
-            ValohaiSubmitExecutionOperator.get_output_uri,
+        'test-set-images': ValohaiSubmitExecutionOperator.get_output_uri(
             task=preprocess,
             name='mnist-test-images.gz'),
-        'test-set-labels': partial(
-            ValohaiSubmitExecutionOperator.get_output_uri,
+        'test-set-labels': ValohaiSubmitExecutionOperator.get_output_uri(
             task=preprocess,
             name='mnist-test-labels.gz'),
     },

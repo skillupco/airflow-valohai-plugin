@@ -1,5 +1,8 @@
+from functools import partial
+
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
+from airflow.exceptions import AirflowException
 
 from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
@@ -66,18 +69,20 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         )
 
     @staticmethod
-    def get_output_uri(context, task=None, name=None):
-        execution_details = context['ti'].xcom_pull(
-            dag_id=task.dag_id,
-            task_ids=task.task_id,
-            include_prior_dates=True
-        )
+    def get_output_uri(task=None, name=None):
+        def _get_output_uri(context, task=None, name=None):
+            execution_details = context['ti'].xcom_pull(
+                dag_id=task.dag_id,
+                task_ids=task.task_id,
+                include_prior_dates=True
+            )
 
-        for output in execution_details['outputs']:
-            if output['name'] == name:
-                return ['datum://{}'.format(output['id'])]
+            for output in execution_details['outputs']:
+                if output['name'] == name:
+                    return ['datum://{}'.format(output['id'])]
 
-        raise Exception('Failed to find uri for input with name {}'.format(name))
+            raise AirflowException('Failed to find uri for input with name {}'.format(name))
+        return partial(_get_output_uri, task=task, name=name)
 
     def execute(self, context):
         hook = self.get_hook()
