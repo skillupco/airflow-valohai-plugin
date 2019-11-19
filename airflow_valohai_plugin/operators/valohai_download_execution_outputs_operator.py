@@ -3,6 +3,7 @@ import re
 from urllib.request import urlretrieve
 import logging
 
+from airflow.utils.decorators import apply_defaults
 from airflow.models import BaseOperator
 from airflow.configuration import AIRFLOW_HOME
 
@@ -24,6 +25,7 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
     ui_color = '#fff'
     ui_fgcolor = '#000'
 
+    @apply_defaults
     def __init__(
         self,
         output_task,

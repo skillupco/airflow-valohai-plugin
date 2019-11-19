@@ -1,4 +1,5 @@
 from airflow.models import BaseOperator
+from airflow.utils.decorators import apply_defaults
 
 from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
@@ -33,6 +34,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
     ui_color = '#002f6c'
     ui_fgcolor = '#fff'
 
+    @apply_defaults
     def __init__(
         self,
         project_name,
