@@ -22,4 +22,5 @@ jobs:
         flake8 airflow_valohai_plugin tests examples setup.py
     - name: Run unit tests
       run: |
+        pip install .
         AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh
