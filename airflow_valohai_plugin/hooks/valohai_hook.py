@@ -163,7 +163,10 @@ class ValohaiHook(BaseHook):
             json=payload,
             headers=self.headers
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception:
+            raise AirflowException('Failed to submit execution: {}'.format(response.text))
 
         try:
             data = response.json()
@@ -173,7 +176,7 @@ class ValohaiHook(BaseHook):
             execution_url = data['urls']['display']
             logging.info('Started execution: {}'.format(execution_url))
         except Exception:
-            logging.exception('Failed to parse response: {}'.format(response))
+            raise AirflowException('Failed to parse response: {}'.format(response.text))
 
         if tags:
             self.add_execution_tags(tags, execution_id)
