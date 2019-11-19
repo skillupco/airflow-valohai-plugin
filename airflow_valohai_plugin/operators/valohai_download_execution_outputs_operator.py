@@ -65,14 +65,14 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
         for output in execution_details['outputs']:
             if self.output_name:
                 if not self.output_name == output['name']:
-                    msg = 'Ignore ouput name {}'.format(output['name'])
+                    msg = 'Ignore output name {}'.format(output['name'])
                     logging.info(msg)
                     continue
                 output_name = self.output_name
             elif self.output_name_pattern:
                 name_match = re.match(self.output_name_pattern, output['name'])
                 if not name_match:
-                    msg = 'Ignore ouput name {} because failed to match pattern {}'.format(
+                    msg = 'Ignore output name {} because failed to match pattern {}'.format(
                         output['name'], self.output_name_pattern)
                     logging.info(msg)
                     continue
