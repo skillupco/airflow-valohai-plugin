@@ -1,0 +1,19 @@
+version: "2.4"
+services:
+  dev:
+    image: python:3.7
+    container_name: airflow-valohai-plugin
+    volumes:
+      - /data/airflow-valohai-plugin:/app
+      - /data/.pdbrc:/root/.pdbrc
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa
+      - /root/.ssh/known_hosts:/root/.ssh/known_hosts
+      - /root/.gitconfig:/root/.gitconfig
+      - pip-cache:/root/.cache/pip
+    command: bash --login -i
+    stdin_open: true
+    tty: true
+
+volumes:
+  pip-cache:
+    external: true

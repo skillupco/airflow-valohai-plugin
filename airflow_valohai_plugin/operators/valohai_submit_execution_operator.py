@@ -87,8 +87,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
     def execute(self, context):
         hook = self.get_hook()
 
-        # Pushes execution status to XCOM
-        return hook.submit_execution(
+        execution = hook.submit_execution(
             self.project_name,
             self.step,
             resolve_callables(self.inputs, context),
@@ -98,3 +97,20 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
             self.branch,
             self.tags
         )
+
+        outputs = hook.get_execution_outputs(execution['id'])
+
+        # Pushes execution status to XCOM
+        return {
+            **execution,
+            'outputs': [
+                {
+                    'name': output['name'],
+                    'ctime': output['ctime'],
+                    'size': output['size'],
+                    'uri': output['uri'],
+                    'id': output['id']
+                }
+                for output in outputs
+            ]
+        }
