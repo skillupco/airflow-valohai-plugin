@@ -1,6 +1,5 @@
 import os
 import re
-from urllib.request import urlretrieve
 import logging
 
 from airflow.utils.decorators import apply_defaults
@@ -58,7 +57,7 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
 
         bucket_name, key = S3Hook.parse_s3_url(uri)
         s3_client = S3Hook(aws_conn_id=self.aws_conn_id).get_conn()
-        url = s3_client.download_file(bucket_name, key, output_path)
+        s3_client.download_file(bucket_name, key, output_path)
 
         logging.info('Downloaded output {} to: {}'.format(output_name, output_path))
 
