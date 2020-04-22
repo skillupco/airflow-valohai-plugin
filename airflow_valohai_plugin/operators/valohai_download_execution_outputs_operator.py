@@ -1,5 +1,6 @@
 import os
 import re
+from urllib.request import urlretrieve
 import logging
 
 from airflow.utils.decorators import apply_defaults
@@ -52,14 +53,9 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
     def get_output_path(self, name):
         return os.path.join(AIRFLOW_HOME, self.output_path, name)
 
-    def download_output(self, uri, output_name):
+    def download_output(self, url, output_name):
         output_path = self.get_output_path(output_name)
-
-        bucket_name, key = S3Hook.parse_s3_url(uri)
-        s3_client = S3Hook(aws_conn_id=self.aws_conn_id).get_conn()
-        s3_client.download_file(bucket_name, key, output_path)
-
-        logging.info('Downloaded output {} to: {}'.format(output_name, output_path))
+        urlretrieve(url, output_path)
 
     def execute(self, context):
         output_name = None
@@ -86,7 +82,7 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
             else:
                 output_name = output['name']
 
-            self.download_output(output['uri'], output_name)
+            self.download_output(output['url'], output_name)
 
         if output_name is None and self.fail_if_missing:
             msg = 'Failed to find any output for '

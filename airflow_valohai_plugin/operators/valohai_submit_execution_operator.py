@@ -108,8 +108,8 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
                     'name': output['name'],
                     'ctime': output['ctime'],
                     'size': output['size'],
-                    'uri': output['uri'],
-                    'id': output['id']
+                    'id': output['id'],
+                    'url': hook.get_output_url(output['id']),
                 }
                 for output in outputs
             ]

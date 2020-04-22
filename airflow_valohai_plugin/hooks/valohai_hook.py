@@ -12,6 +12,7 @@ LIST_COMMITS_ENDPOINT = 'https://{host}/api/v0/commits/'
 SUBMIT_EXECUTION_ENDPOINT = 'https://{host}/api/v0/executions/'
 GET_EXECUTION_DETAILS_ENDPOINT = 'https://{host}/api/v0/executions/{execution_id}/'
 GET_EXECUTION_OUTPUTS_ENDPOINT = 'https://{host}/api/v0/data/?output_execution={execution_id}&limit={limit}'
+GET_OUTPUT_URL = '/api/v0/data/{output_id}/download/'
 FETCH_REPOSITORY_ENDPOINT = 'https://{host}/api/v0/projects/{project_id}/fetch/'
 SET_EXECUTION_TAGS_ENDPOINT = 'https://{host}/api/v0/executions/{execution_id}/tags/'
 
@@ -128,6 +129,17 @@ class ValohaiHook(BaseHook):
             next_page = data['next']
 
         return outputs
+
+
+    def get_output_url(self, output_id, limit=100):
+        response = requests.get(
+            GET_OUTPUT_URL.format(output_id=output_id),
+            headers=self.headers,
+        )
+        response.raise_for_status()
+        data = response.json()
+
+        return data['url']
 
     def add_execution_tags(self, tags, execution_id):
         response = requests.post(
