@@ -7,7 +7,6 @@ from airflow.utils.decorators import apply_defaults
 from airflow.models import BaseOperator
 from airflow.configuration import AIRFLOW_HOME
 from airflow.exceptions import AirflowException
-from airflow.hooks.S3_hook import S3Hook
 
 
 class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
