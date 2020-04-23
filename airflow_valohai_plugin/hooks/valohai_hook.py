@@ -130,7 +130,6 @@ class ValohaiHook(BaseHook):
 
         return outputs
 
-
     def get_output_url(self, output_id, limit=100):
         response = requests.get(
             GET_OUTPUT_URL.format(host=self.host, output_id=output_id),
