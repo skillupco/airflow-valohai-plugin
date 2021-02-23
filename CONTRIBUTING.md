@@ -29,9 +29,14 @@ source venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
+Clean up residual Airflow files.
+```
+rm examples/airflow.cfg examples/airflow.db examples/unittests.cfg
+```
+
 Init the Airflow database.
 ```
-AIRFLOW_HOME=$PWD/examples airflow initdb
+AIRFLOW_HOME=$PWD/examples airflow db init
 ```
 
 Start the webserver within the virtual environment in one terminal.

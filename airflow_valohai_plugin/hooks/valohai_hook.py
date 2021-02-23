@@ -3,7 +3,7 @@ import logging
 
 import requests
 
-from airflow.hooks.base_hook import BaseHook
+from airflow.hooks.base import BaseHook
 from airflow.exceptions import AirflowException
 
 LIST_PROJECTS_ENDPOINT = 'https://{host}/api/v0/projects/'

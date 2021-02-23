@@ -1,7 +1,7 @@
 import unittest
 
-from airflow.hooks.valohai import ValohaiHook
-from airflow.operators.valohai import ValohaiSubmitExecutionOperator
+from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
+from airflow_valohai_plugin.operators.valohai_submit_execution_operator import ValohaiSubmitExecutionOperator
 
 
 try:

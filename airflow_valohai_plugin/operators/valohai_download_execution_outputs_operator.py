@@ -4,7 +4,7 @@ from urllib.request import urlretrieve
 import logging
 
 from airflow.utils.decorators import apply_defaults
-from airflow.models import BaseOperator
+from airflow.models.baseoperator import BaseOperator
 from airflow.configuration import AIRFLOW_HOME
 from airflow.exceptions import AirflowException
 

@@ -1,6 +1,6 @@
 from functools import partial
 
-from airflow.models import BaseOperator
+from airflow.models.baseoperator import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.exceptions import AirflowException
 
