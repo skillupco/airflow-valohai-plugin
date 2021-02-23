@@ -5,9 +5,9 @@
 	"workspaceFolder": "/app",
 	"extensions": [
 		"visualstudioexptteam.vscodeintellicode",
-		"ms-python.python"
+		"ms-python.python",
+		"ms-python.vscode-pylance"
 	],
-	"shutdownAction": "none",
 	"name": "airflow-valohai-plugin",
 	"settings": {
 	  "window.title": "airflow-valohai-plugin"
