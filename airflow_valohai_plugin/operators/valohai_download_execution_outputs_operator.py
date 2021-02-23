@@ -36,7 +36,6 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
         output_name_pattern=None,
         output_path='.',
         fail_if_missing=True,
-        aws_conn_id='aws_default',
         *args,
         **kwargs
     ):
@@ -47,7 +46,6 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
         self.output_name_pattern = output_name_pattern
         self.output_path = output_path
         self.fail_if_missing = fail_if_missing
-        self.aws_conn_id = aws_conn_id
 
     def get_output_path(self, name):
         return os.path.join(AIRFLOW_HOME, self.output_path, name)
