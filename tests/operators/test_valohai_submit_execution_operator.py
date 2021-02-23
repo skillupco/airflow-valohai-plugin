@@ -28,13 +28,32 @@ class TestValohaiSubmitExecutionOperator(unittest.TestCase):
 
     @mock.patch.object(ValohaiHook, '__init__')
     @mock.patch.object(ValohaiHook, 'submit_execution')
-    def test_valohai_operator_execute(self, submit_execution_mock, hook_init_mock):
+    @mock.patch.object(ValohaiHook, 'get_execution_outputs')
+    @mock.patch.object(ValohaiHook, 'get_output_url')
+    def test_valohai_operator_execute(
+        self,
+        get_output_url_mock,
+        get_execution_outputs_mock,
+        submit_execution_mock,
+        hook_init_mock
+    ):
         hook_init_mock.return_value = None
+        submit_execution_mock.return_value = {'id': 0}
+        get_execution_outputs_mock.return_value = [{
+            'name': 'output_name',
+            'ctime': 'output_ctime',
+            'size': 'output_size',
+            'id': 'output_id',
+            'uri': 'output_uri'
+        }]
+        get_output_url_mock.return_value = 'output_url'
 
         self.valohai_operator.execute(None)
 
         submit_execution_mock.assert_called_once()
         hook_init_mock.assert_called_once_with('valohai_default')
+        get_execution_outputs_mock.assert_called_once_with(0)
+        get_output_url_mock.assert_called_once_with('output_id')
 
 
 if __name__ == '__main__':
