@@ -87,9 +87,6 @@ Make sure you restart the webserver and scheduler after making changes to the pl
 # Activate the virtual environment
 source venv/bin/activate # if in local environment
 
-# Install dev dependencies
-pip install -r requirements-dev.txt
-
 # Run tests
 AIRFLOW_HOME=$PWD/tests ./run_unit_tests.sh
 ```
