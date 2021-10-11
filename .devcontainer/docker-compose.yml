@@ -4,7 +4,6 @@ services:
     container_name: airflow-valohai-plugin
     volumes:
       - /data/airflow-valohai-plugin:/app
-      - /data/.pdbrc:/root/.pdbrc
       - /root/.ssh/id_rsa:/root/.ssh/id_rsa
       - /root/.ssh/known_hosts:/root/.ssh/known_hosts
       - /root/.gitconfig:/root/.gitconfig
