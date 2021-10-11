@@ -4,15 +4,11 @@ Integration between [Airflow](https://airflow.apache.org/) and [Valohai](https:/
 
 ## Installation
 
-#### For airflow>=1.10.2
 Install this package directly from pypi.
 
 ```
 pip install airflow-valohai-plugin
 ```
-
-#### For airflow<1.10.2
-Copy the contents of `airflow_valohai_plugin` into your `$AIRFLOW_HOME/plugins` folder.
 
 You can read more about the use cases of [Airflow plugins](https://airflow.apache.org/plugins.html) in the official docs.
 
