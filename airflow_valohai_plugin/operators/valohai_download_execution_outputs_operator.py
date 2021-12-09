@@ -4,7 +4,7 @@ from urllib.request import urlretrieve
 import logging
 
 from airflow.utils.decorators import apply_defaults
-from airflow.models import BaseOperator
+from airflow.models.baseoperator import BaseOperator
 from airflow.configuration import AIRFLOW_HOME
 from airflow.exceptions import AirflowException
 
@@ -53,7 +53,6 @@ class ValohaiDownloadExecutionOutputsOperator(BaseOperator):
     def download_output(self, url, output_name):
         output_path = self.get_output_path(output_name)
         urlretrieve(url, output_path)
-        logging.info('Downloaded output {} to: {}'.format(output_name, output_path))
 
     def execute(self, context):
         output_name = None

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.valohai import ValohaiSubmitExecutionOperator
+from airflow_valohai_plugin.operators.valohai_submit_execution_operator import ValohaiSubmitExecutionOperator
 
 default_args = {
     'owner': 'airflow',

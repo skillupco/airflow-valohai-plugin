@@ -1,0 +1,15 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "dev",
+	"workspaceFolder": "/app",
+	"extensions": [
+		"visualstudioexptteam.vscodeintellicode",
+		"ms-python.python",
+		"ms-python.vscode-pylance"
+	],
+	"name": "airflow-valohai-plugin",
+	"settings": {
+	  "window.title": "airflow-valohai-plugin"
+	}
+}

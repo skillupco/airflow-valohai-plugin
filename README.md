@@ -4,15 +4,11 @@ Integration between [Airflow](https://airflow.apache.org/) and [Valohai](https:/
 
 ## Installation
 
-#### For airflow>=1.10.2
 Install this package directly from pypi.
 
 ```
 pip install airflow-valohai-plugin
 ```
-
-#### For airflow<1.10.2
-Copy the contents of `airflow_valohai_plugin` into your `$AIRFLOW_HOME/plugins` folder.
 
 You can read more about the use cases of [Airflow plugins](https://airflow.apache.org/plugins.html) in the official docs.
 
@@ -29,7 +25,8 @@ Create a Valohai Connection in the Airflow UI with:
 There are two operators that you can import.
 
 ```
-from airflow.operators.valohai import ValohaiSubmitExecutionOperator, ValohaiDownloadExecutionOutputsOperator
+from airflow_valohai_plugin.operators.valohai_submit_execution_operator import ValohaiSubmitExecutionOperator
+from airflow_valohai_plugin.operators.valohai_download_execution_outputs_operator import ValohaiDownloadExecutionOutputsOperator
 ```
 
 You can then create tasks and assign them to your DAGs.
@@ -48,7 +45,7 @@ train_model = ValohaiSubmitExecutionOperator(
 ### ValohaiDownloadExecutionOutputsOperator
 
 ```
-from airflow.operators.valohai import ValohaiDownloadExecutionOutputsOperator
+from airflow_valohai_plugin.operators.valohai_download_execution_outputs_operator import ValohaiDownloadExecutionOutputsOperator
 
 download_model = ValohaiDownloadExecutionOutputsOperator(
     task_id='download_model',

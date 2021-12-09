@@ -3,7 +3,7 @@ import unittest
 from airflow import configuration
 from airflow import models
 from airflow.utils import db
-from airflow.hooks.valohai import ValohaiHook
+from airflow_valohai_plugin.hooks.valohai_hook import ValohaiHook
 
 try:
     from unittest import mock

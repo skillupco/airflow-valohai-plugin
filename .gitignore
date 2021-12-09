@@ -129,6 +129,8 @@ airflow.db
 logs/
 unittests.cfg
 airflow-webserver.pid
+model.pb
+tests/webserver_config.py
 
 # Visual Studi
 .vscode/

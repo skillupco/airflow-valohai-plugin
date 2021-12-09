@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.valohai import ValohaiSubmitExecutionOperator, ValohaiDownloadExecutionOutputsOperator
+from airflow_valohai_plugin.operators.valohai_submit_execution_operator import ValohaiSubmitExecutionOperator
+from airflow_valohai_plugin.operators.valohai_download_execution_outputs_operator import ValohaiDownloadExecutionOutputsOperator
 
 default_args = {
     'owner': 'airflow',
