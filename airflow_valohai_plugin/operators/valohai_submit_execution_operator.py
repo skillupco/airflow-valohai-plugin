@@ -49,6 +49,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         branch='master',
         tags=[],
         valohai_conn_id='valohai_default',
+        time_limit=0,
         *args,
         **kwargs
     ):
@@ -62,6 +63,7 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
         self.branch = branch
         self.tags = tags
         self.valohai_conn_id = valohai_conn_id
+        self.time_limit = time_limit
 
     def get_hook(self):
         return ValohaiHook(
@@ -95,7 +97,8 @@ class ValohaiSubmitExecutionOperator(BaseOperator):
             self.environment,
             self.commit,
             self.branch,
-            self.tags
+            self.tags,
+            self.time_limit,
         )
 
         outputs = hook.get_execution_outputs(execution['id'])

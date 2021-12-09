@@ -37,7 +37,7 @@ You can then create tasks and assign them to your DAGs.
 train_model = ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
-    step='Train model (MNIST)',
+    step='train-model',
     dag=dag,
 )
 ```

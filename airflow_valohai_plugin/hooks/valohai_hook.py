@@ -160,6 +160,7 @@ class ValohaiHook(BaseHook):
         commit,
         branch,
         tags,
+        time_limit,
         polling_period_seconds=30,
     ):
         """
@@ -193,6 +194,9 @@ class ValohaiHook(BaseHook):
 
         if environment:
             payload['environment'] = environment
+
+        if time_limit:
+            payload['time_limit'] = time_limit
 
         response = requests.post(
             SUBMIT_EXECUTION_ENDPOINT.format(host=self.host),
