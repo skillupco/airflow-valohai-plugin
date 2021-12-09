@@ -14,7 +14,7 @@ default_args = {
 }
 
 dag = DAG(
-    'example_valohai_dag',
+    'example_valohai_dag_time_limit',
     default_args=default_args,
     schedule_interval=None,
     catchup=False
@@ -24,6 +24,7 @@ train_model = ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
     step='train-model',
+    environment='azure-westeurope-f2sv2',
     dag=dag,
     inputs={
         'dataset': 'https://valohaidemo.blob.core.windows.net/mnist/preprocessed_mnist.npz',
@@ -31,7 +32,8 @@ train_model = ValohaiSubmitExecutionOperator(
     parameters={
         'epochs': 5,
         'learning_rate': 0.001,
-    }
+    },
+    time_limit=5,
 )
 
 download_model = ValohaiDownloadExecutionOutputsOperator(

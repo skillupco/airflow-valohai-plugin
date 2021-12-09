@@ -36,7 +36,7 @@ preprocess = ValohaiSubmitExecutionOperator(
 train = ValohaiSubmitExecutionOperator(
     task_id='train_model',
     project_name='tensorflow-example',
-    step='Train model (MNIST)',
+    step='train-model',
     dag=dag,
     inputs={
         'training-set-images': ValohaiSubmitExecutionOperator.get_output_uri(
